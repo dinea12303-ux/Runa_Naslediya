@@ -212,3 +212,176 @@ label { color: var(--accent); font-weight: 700; }
   .manage-row { grid-template-columns: 1fr; }
   .chapter-nav { flex-direction: column; }
 }
+
+/* ===== Настройки чтения в главе ===== */
+
+.chapter-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin: -10px 0 12px;
+}
+
+.reader-gear {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(43, 43, 54, 0.9);
+  color: var(--accent);
+  font-size: 21px;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.reader-gear:hover {
+  background: rgba(122, 75, 181, 0.32);
+  color: #fff;
+}
+
+.reader-settings-panel {
+  margin: 0 0 22px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(43, 43, 54, 0.88);
+}
+
+.reader-settings-title {
+  color: var(--accent);
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.reader-settings-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.reader-setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(212, 165, 255, 0.14);
+}
+
+.reader-setting-row:first-child {
+  border-top: 0;
+}
+
+.reader-buttons,
+.reader-theme-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.reader-buttons button,
+.reader-theme-buttons button {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(30, 30, 38, 0.9);
+  color: var(--text);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.reader-buttons button:hover,
+.reader-theme-buttons button:hover,
+.reader-theme-buttons button.active {
+  background: var(--accent-strong);
+  color: #fff;
+}
+
+.reader-buttons strong {
+  min-width: 58px;
+  text-align: center;
+  color: var(--accent);
+}
+
+/* Фоны чтения */
+body.reader-theme-dark {
+  background: #1e1e26;
+  color: #e0e0e0;
+}
+
+body.reader-theme-gray {
+  background: #202124;
+  color: #e8eaed;
+}
+
+body.reader-theme-gray .chapter-page {
+  background: #2b2c31;
+  color: #e8eaed;
+}
+
+body.reader-theme-soft {
+  background: #252130;
+  color: #eee8f7;
+}
+
+body.reader-theme-soft .chapter-page {
+  background: #302b3b;
+  color: #eee8f7;
+}
+
+body.reader-theme-paper {
+  background: #efe6d8;
+  color: #2b2520;
+}
+
+body.reader-theme-paper .chapter-page {
+  background: #f7efe4;
+  color: #2b2520;
+}
+
+body.reader-theme-paper .chapter-nav,
+body.reader-theme-paper .reader-settings-panel {
+  background: rgba(247, 239, 228, 0.95);
+}
+
+body.reader-theme-white {
+  background: #ffffff;
+  color: #1f1f1f;
+}
+
+body.reader-theme-white .chapter-page {
+  background: #ffffff;
+  color: #1f1f1f;
+}
+
+body.reader-theme-white .chapter-nav,
+body.reader-theme-white .reader-settings-panel {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+body.reader-theme-paper .chapter-nav a,
+body.reader-theme-white .chapter-nav a {
+  color: #5a3d7a;
+}
+
+body.reader-theme-paper .reader-setting-row,
+body.reader-theme-white .reader-setting-row {
+  border-top-color: rgba(90, 61, 122, 0.22);
+}
+
+body.reader-theme-paper .reader-buttons button,
+body.reader-theme-paper .reader-theme-buttons button,
+body.reader-theme-white .reader-buttons button,
+body.reader-theme-white .reader-theme-buttons button {
+  background: rgba(255, 255, 255, 0.75);
+  color: #2b2520;
+}
+
+@media (max-width: 760px) {
+  .reader-setting-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .reader-theme-buttons {
+    width: 100%;
+  }
+}
