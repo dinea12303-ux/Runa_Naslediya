@@ -383,6 +383,12 @@ function buildChapterHtml(book, chapter, text) {
         <button type="button" onclick="setReaderTheme('white')">Белый</button>
       </div>
     </div>
+    <div class="reader-setting-row">
+  <span>Сброс</span>
+  <div class="reader-buttons">
+    <button type="button" onclick="resetReaderSettings()">Сбросить</button>
+  </div>
+</div>
   </div>
 </section>`;
 
@@ -498,6 +504,11 @@ function buildChapterHtml(book, chapter, text) {
       saveReaderSettings(settings);
       applyReaderSettings();
     }
+
+    function resetReaderSettings() {
+  localStorage.removeItem('readerSettingsV1');
+  applyReaderSettings();
+}
 
     function toggleReaderSettings() {
       const panel = document.getElementById('reader-settings-panel');
