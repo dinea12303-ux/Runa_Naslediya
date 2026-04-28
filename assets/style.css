@@ -429,3 +429,116 @@ body.reader-theme-white .chapter-page {
   background: #ffffff;
   color: #1f1f1f;
 }
+/* ===== Глобальные фоны публичного сайта ===== */
+
+/* Тёмный */
+body.reader-theme-dark {
+  background: #1e1e26;
+  color: #e0e0e0;
+}
+
+body.reader-theme-dark .site-shell,
+body.reader-theme-dark .book-card,
+body.reader-theme-dark .book-hero,
+body.reader-theme-dark .chapter-list-item,
+body.reader-theme-dark .panel,
+body.reader-theme-dark .search-box {
+  background-color: #2b2b36;
+  color: #e0e0e0;
+}
+
+/* Серый */
+body.reader-theme-gray {
+  background: #202124;
+  color: #e8eaed;
+}
+
+body.reader-theme-gray .site-shell,
+body.reader-theme-gray .book-card,
+body.reader-theme-gray .book-hero,
+body.reader-theme-gray .chapter-list-item,
+body.reader-theme-gray .panel,
+body.reader-theme-gray .search-box {
+  background-color: #2b2c31;
+  color: #e8eaed;
+}
+
+/* Мягкий */
+body.reader-theme-soft {
+  background: #252130;
+  color: #eee8f7;
+}
+
+body.reader-theme-soft .site-shell,
+body.reader-theme-soft .book-card,
+body.reader-theme-soft .book-hero,
+body.reader-theme-soft .chapter-list-item,
+body.reader-theme-soft .panel,
+body.reader-theme-soft .search-box {
+  background-color: #302b3b;
+  color: #eee8f7;
+}
+
+/* Бумага */
+body.reader-theme-paper {
+  background: #efe6d8;
+  color: #2b2520;
+}
+
+body.reader-theme-paper .site-shell,
+body.reader-theme-paper .book-card,
+body.reader-theme-paper .book-hero,
+body.reader-theme-paper .chapter-list-item,
+body.reader-theme-paper .panel,
+body.reader-theme-paper .search-box {
+  background-color: #f7efe4;
+  color: #2b2520;
+  border-color: rgba(90, 61, 122, 0.28);
+}
+
+body.reader-theme-paper a,
+body.reader-theme-paper .brand,
+body.reader-theme-paper h1,
+body.reader-theme-paper h2,
+body.reader-theme-paper h3 {
+  color: #4e2f70;
+}
+
+body.reader-theme-paper input,
+body.reader-theme-paper textarea,
+body.reader-theme-paper select {
+  background: #fffaf2;
+  color: #2b2520;
+}
+
+/* Белый */
+body.reader-theme-white {
+  background: #ffffff;
+  color: #1f1f1f;
+}
+
+body.reader-theme-white .site-shell,
+body.reader-theme-white .book-card,
+body.reader-theme-white .book-hero,
+body.reader-theme-white .chapter-list-item,
+body.reader-theme-white .panel,
+body.reader-theme-white .search-box {
+  background-color: #ffffff;
+  color: #1f1f1f;
+  border-color: rgba(90, 61, 122, 0.25);
+}
+
+body.reader-theme-white a,
+body.reader-theme-white .brand,
+body.reader-theme-white h1,
+body.reader-theme-white h2,
+body.reader-theme-white h3 {
+  color: #4e2f70;
+}
+
+body.reader-theme-white input,
+body.reader-theme-white textarea,
+body.reader-theme-white select {
+  background: #ffffff;
+  color: #1f1f1f;
+}

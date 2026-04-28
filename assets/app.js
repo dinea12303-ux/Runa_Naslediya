@@ -6,6 +6,34 @@ let currentBook = null;
 let currentPage = 1;
 let chapterFilter = '';
 
+function applyGlobalReaderTheme() {
+  try {
+    const raw = localStorage.getItem('readerSettingsV1');
+    const settings = raw ? JSON.parse(raw) : {};
+    const theme = settings.theme || 'dark';
+
+    document.body.classList.remove(
+      'reader-theme-dark',
+      'reader-theme-gray',
+      'reader-theme-soft',
+      'reader-theme-paper',
+      'reader-theme-white'
+    );
+
+    document.body.classList.add('reader-theme-' + theme);
+  } catch (e) {
+    document.body.classList.add('reader-theme-dark');
+  }
+}
+
+applyGlobalReaderTheme();
+
+window.addEventListener('storage', (event) => {
+  if (event.key === 'readerSettingsV1') {
+    applyGlobalReaderTheme();
+  }
+});
+
 const $ = (id) => document.getElementById(id);
 
 function safeText(value) {
