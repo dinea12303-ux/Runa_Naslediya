@@ -6,7 +6,7 @@
   <title>Глава 2. Стена и Рунический Знак</title>
   <link rel="stylesheet" href="../../assets/style.css">
 </head>
-<body>
+<body class="chapter-reading-page">
   <main class="chapter-page">
     
 <nav class="chapter-nav">
@@ -61,6 +61,12 @@
         <button type="button" onclick="setReaderTheme('white')">Белый</button>
       </div>
     </div>
+    <div class="reader-setting-row">
+  <span>Сброс</span>
+  <div class="reader-buttons">
+    <button type="button" onclick="resetReaderSettings()">Сбросить</button>
+  </div>
+</div>
   </div>
 </section>
     <h1>Глава 2. Стена и Рунический Знак</h1>
@@ -179,6 +185,11 @@
       saveReaderSettings(settings);
       applyReaderSettings();
     }
+
+    function resetReaderSettings() {
+  localStorage.removeItem('readerSettingsV1');
+  applyReaderSettings();
+}
 
     function toggleReaderSettings() {
       const panel = document.getElementById('reader-settings-panel');
