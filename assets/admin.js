@@ -396,7 +396,7 @@ function buildChapterHtml(book, chapter, text) {
   <title>Глава ${escapeHtml(chapter.num)}. ${escapeHtml(chapter.title)}</title>
   <link rel="stylesheet" href="../../assets/style.css">
 </head>
-<body>
+<body class="chapter-reading-page">
   <main class="chapter-page">
     ${nav}
     ${readerSettings}

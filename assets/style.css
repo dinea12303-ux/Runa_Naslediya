@@ -542,3 +542,47 @@ body.reader-theme-white select {
   background: #ffffff;
   color: #1f1f1f;
 }
+/* ===== Светлые режимы НЕ ломают публичную библиотеку ===== */
+
+body.reader-theme-paper:not(.chapter-reading-page),
+body.reader-theme-white:not(.chapter-reading-page) {
+  background: #1e1e26;
+  color: #e0e0e0;
+}
+
+body.reader-theme-paper:not(.chapter-reading-page) .site-shell,
+body.reader-theme-paper:not(.chapter-reading-page) .book-card,
+body.reader-theme-paper:not(.chapter-reading-page) .book-hero,
+body.reader-theme-paper:not(.chapter-reading-page) .chapter-list-item,
+body.reader-theme-paper:not(.chapter-reading-page) .panel,
+body.reader-theme-paper:not(.chapter-reading-page) .search-box,
+body.reader-theme-white:not(.chapter-reading-page) .site-shell,
+body.reader-theme-white:not(.chapter-reading-page) .book-card,
+body.reader-theme-white:not(.chapter-reading-page) .book-hero,
+body.reader-theme-white:not(.chapter-reading-page) .chapter-list-item,
+body.reader-theme-white:not(.chapter-reading-page) .panel,
+body.reader-theme-white:not(.chapter-reading-page) .search-box {
+  background-color: #2b2b36;
+  color: #e0e0e0;
+  border-color: rgba(212, 165, 255, 0.28);
+}
+
+body.reader-theme-paper:not(.chapter-reading-page) a,
+body.reader-theme-paper:not(.chapter-reading-page) .brand,
+body.reader-theme-paper:not(.chapter-reading-page) h1,
+body.reader-theme-paper:not(.chapter-reading-page) h2,
+body.reader-theme-paper:not(.chapter-reading-page) h3,
+body.reader-theme-white:not(.chapter-reading-page) a,
+body.reader-theme-white:not(.chapter-reading-page) .brand,
+body.reader-theme-white:not(.chapter-reading-page) h1,
+body.reader-theme-white:not(.chapter-reading-page) h2,
+body.reader-theme-white:not(.chapter-reading-page) h3 {
+  color: #d4a5ff;
+}
+
+body.reader-theme-paper:not(.chapter-reading-page) input,
+body.reader-theme-white:not(.chapter-reading-page) input {
+  background: #1e1e26;
+  color: #e0e0e0;
+  border-color: rgba(212, 165, 255, 0.32);
+}
