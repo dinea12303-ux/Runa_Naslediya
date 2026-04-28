@@ -391,6 +391,37 @@ async function rebuildBookChaptersNavigation(book) {
     await githubPut(ch.url, newHtml, `Обновление навигации главы ${ch.num}. ${ch.title || ''}`);
   }
 }
+function dedupeBookChapters(book) {
+  if (!book || !Array.isArray(book.chapters)) return;
+
+  const seen = new Set();
+  const clean = [];
+
+  for (let i = book.chapters.length - 1; i >= 0; i--) {
+    const ch = book.chapters[i];
+    const key = String(ch.url || ch.id || `${ch.num}|${ch.title || ''}`).trim();
+
+    if (!key) {
+      clean.unshift(ch);
+      continue;
+    }
+
+    if (seen.has(key)) continue;
+
+    seen.add(key);
+    clean.unshift(ch);
+  }
+
+  book.chapters = clean.sort((a, b) => {
+    const na = Number(a.num);
+    const nb = Number(b.num);
+
+    if (!Number.isNaN(na) && !Number.isNaN(nb) && na !== nb) return na - nb;
+
+    return String(a.title || '').localeCompare(String(b.title || ''), 'ru');
+  });
+}
+
 async function saveChapter() {
   try {
     const book = selectedBook();
@@ -422,6 +453,8 @@ async function saveChapter() {
     const html = buildChapterHtml(book, chapter, text);
     await githubPut(chapter.url, html, `${isNew ? 'Создание' : 'Обновление'} главы ${title}`);
     if (oldUrl && oldUrl !== chapter.url) await githubDelete(oldUrl, `Удаление старого файла главы ${title}`);
+
+    dedupeBookChapters(book);
 
     await rebuildBookChaptersNavigation(book);
 
@@ -476,6 +509,8 @@ async function deleteChapter(bookId, chapterUrl) {
     await githubDelete(chapter.url, `Удаление главы ${chapter.title}`);
     book.chapters = book.chapters.filter(ch => ch.url !== chapterUrl);
     book.updatedAt = today();
+
+    dedupeBookChapters(book);
 
     await rebuildBookChaptersNavigation(book);
 
