@@ -658,3 +658,12 @@ body::before {
 body::after {
   content: none !important;
 }
+
+/* ===== Полное отключение тумана поверх фона ===== */
+
+body::before,
+body::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+}
