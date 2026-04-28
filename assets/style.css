@@ -385,3 +385,47 @@ body.reader-theme-white .reader-theme-buttons button {
     width: 100%;
   }
 }
+/* ===== Исправление двойного фона в режиме чтения ===== */
+
+body.reader-theme-dark .chapter-page,
+body.reader-theme-gray .chapter-page,
+body.reader-theme-soft .chapter-page,
+body.reader-theme-paper .chapter-page,
+body.reader-theme-white .chapter-page {
+  box-shadow: none;
+}
+
+/* Тёмный — текущий основной */
+body.reader-theme-dark,
+body.reader-theme-dark .chapter-page {
+  background: #1e1e26;
+  color: #e0e0e0;
+}
+
+/* Серый — рабочий графит */
+body.reader-theme-gray,
+body.reader-theme-gray .chapter-page {
+  background: #202124;
+  color: #e8eaed;
+}
+
+/* Мягкий — фиолетовый спокойный */
+body.reader-theme-soft,
+body.reader-theme-soft .chapter-page {
+  background: #2a2535;
+  color: #eee8f7;
+}
+
+/* Бумага — тёплый светлый */
+body.reader-theme-paper,
+body.reader-theme-paper .chapter-page {
+  background: #efe6d8;
+  color: #2b2520;
+}
+
+/* Белый */
+body.reader-theme-white,
+body.reader-theme-white .chapter-page {
+  background: #ffffff;
+  color: #1f1f1f;
+}
