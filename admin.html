@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Управление библиотекой</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" style="text-decoration:none;">📚 Библиотека</a>
+    <nav class="topnav">
+      <a class="nav-link" href="index.html">Сайт</a>
+      <button class="nav-btn active" type="button">Управление</button>
+    </nav>
+  </header>
+
+  <main>
+    <h1 style="font-size:42px;">Управление</h1>
+    <p class="muted">Здесь вводится токен, создаются книги, главы, обложки, иконки и иллюстрации.</p>
+
+    <div class="admin-layout">
+      <aside class="admin-menu">
+        <button class="nav-btn active" type="button" data-panel="connection">🔐 Подключение</button>
+        <button class="nav-btn" type="button" data-panel="site">🏠 Главная</button>
+        <button class="nav-btn" type="button" data-panel="books">📚 Книги</button>
+        <button class="nav-btn" type="button" data-panel="chapters">📖 Главы</button>
+        <button class="nav-btn" type="button" data-panel="service">🧰 Сервис</button>
+      </aside>
+
+      <section class="admin-panel active" id="panel-connection">
+        <h2>Подключение к GitHub</h2>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Владелец репозитория</label>
+            <input id="cfg-owner" placeholder="например: dinea12303-ux" autocomplete="off" />
+          </div>
+          <div class="form-field">
+            <label>Название репозитория</label>
+            <input id="cfg-repo" placeholder="например: MyLibrary" autocomplete="off" />
+          </div>
+          <div class="form-field">
+            <label>Ветка</label>
+            <input id="cfg-branch" placeholder="main" autocomplete="off" />
+          </div>
+          <div class="form-field">
+            <label>GitHub Token</label>
+            <input id="cfg-token" type="password" placeholder="github_pat_... или ghp_..." autocomplete="new-password" />
+          </div>
+        </div>
+        <p class="hint">Токен сохраняется только в твоём браузере. В файлы сайта он не записывается.</p>
+        <div class="row-actions">
+          <button class="primary-btn" id="save-config" type="button">Сохранить настройки</button>
+          <button class="small-btn" id="test-config" type="button">Проверить подключение</button>
+          <button class="danger-btn" id="clear-token" type="button">Удалить токен из браузера</button>
+        </div>
+        <p class="status" id="connection-status"></p>
+      </section>
+
+      <section class="admin-panel" id="panel-site">
+        <h2>Главная страница</h2>
+        <div class="form-field"><label>Название сайта</label><input id="site-title" /></div>
+        <div class="form-field"><label>Подзаголовок</label><input id="site-subtitle" /></div>
+        <div class="form-field"><label>Описание</label><textarea id="site-description"></textarea></div>
+        <div class="form-field"><label>Главная картинка / hero</label><input id="site-hero" placeholder="https://..." /></div>
+        <div class="form-field"><label>Фон страницы</label><input id="site-bg" placeholder="https://..." /></div>
+        <div class="divider"></div>
+        <h3>Базовые цвета</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>Фон</label><input id="theme-background" placeholder="#1e1e26" /></div>
+          <div class="form-field"><label>Панели</label><input id="theme-surface" placeholder="#2b2b36" /></div>
+          <div class="form-field"><label>Карточки</label><input id="theme-card" placeholder="#383845" /></div>
+          <div class="form-field"><label>Акцент</label><input id="theme-accent" placeholder="#d4a5ff" /></div>
+          <div class="form-field"><label>Сильный акцент</label><input id="theme-accent-strong" placeholder="#7a4bb5" /></div>
+          <div class="form-field"><label>Текст</label><input id="theme-text" placeholder="#e0e0e0" /></div>
+        </div>
+        <button class="primary-btn" id="save-site" type="button">Сохранить главную</button>
+        <p class="status" id="site-status"></p>
+      </section>
+
+      <section class="admin-panel" id="panel-books">
+        <h2>Книги</h2>
+        <div class="form-grid">
+          <div class="form-field"><label>ID книги</label><input id="book-id" placeholder="runa-vlasti" autocomplete="off" /></div>
+          <div class="form-field"><label>Название книги</label><input id="book-title" placeholder="Руна Власти" autocomplete="off" /></div>
+          <div class="form-field full"><label>Описание</label><textarea id="book-description" placeholder="Краткое описание книги"></textarea></div>
+          <div class="form-field"><label>Обложка</label><input id="book-cover" placeholder="https://..." autocomplete="off" /></div>
+          <div class="form-field"><label>Мини-иконка</label><input id="book-icon" placeholder="https://..." autocomplete="off" /></div>
+        </div>
+        <div class="row-actions">
+          <button class="primary-btn" id="save-book" type="button">Создать / сохранить книгу</button>
+          <button class="small-btn" id="clear-book-form" type="button">Очистить форму</button>
+        </div>
+        <p class="hint">ID лучше латиницей: буквы, цифры, дефис. Название может быть на русском.</p>
+        <p class="status" id="book-status"></p>
+        <div class="divider"></div>
+        <h3>Список книг</h3>
+        <div id="books-manage-list" class="table-list"></div>
+      </section>
+
+      <section class="admin-panel" id="panel-chapters">
+        <h2>Главы</h2>
+        <div class="form-field">
+          <label>Выбери книгу</label>
+          <select id="chapter-book-select"></select>
+        </div>
+        <div class="form-grid">
+          <div class="form-field"><label>ID главы</label><input id="chapter-id" placeholder="chapter-1" autocomplete="off" /></div>
+          <div class="form-field"><label>Номер главы</label><input id="chapter-num" placeholder="1" autocomplete="off" /></div>
+          <div class="form-field full"><label>Название главы</label><input id="chapter-title" placeholder="Перерождение" autocomplete="off" /></div>
+          <div class="form-field full"><label>Главная иллюстрация главы</label><input id="chapter-image" placeholder="https://..." autocomplete="off" /></div>
+          <div class="form-field full">
+            <label>Текст главы</label>
+            <textarea id="chapter-text" rows="16" placeholder="Текст главы. Для картинки внутри текста используй: [img]https://...[/img]"></textarea>
+          </div>
+        </div>
+        <div class="row-actions">
+          <button class="primary-btn" id="save-chapter" type="button">Создать / сохранить главу</button>
+          <button class="small-btn" id="clear-chapter-form" type="button">Очистить форму</button>
+        </div>
+        <p class="status" id="chapter-status"></p>
+        <div class="divider"></div>
+        <h3>Главы выбранной книги</h3>
+        <div id="chapters-manage-list" class="table-list"></div>
+      </section>
+
+      <section class="admin-panel" id="panel-service">
+        <h2>Сервис</h2>
+        <div class="row-actions">
+          <button class="small-btn" id="reload-db" type="button">Перезагрузить books.json</button>
+          <button class="small-btn" id="download-db" type="button">Скачать копию books.json</button>
+          <button class="small-btn" id="check-broken" type="button">Проверить битые главы</button>
+        </div>
+        <p class="status" id="service-status"></p>
+      </section>
+    </div>
+  </main>
+
+  <script src="assets/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "site": {
+    "title": "Библиотека Мутаций",
+    "subtitle": "Личная библиотека книг и глав",
+    "description": "Здесь будут храниться мои книги, главы, обложки, иконки и иллюстрации.",
+    "heroImageUrl": "",
+    "backgroundImageUrl": ""
+  },
+  "theme": {
+    "background": "#1e1e26",
+    "surface": "#2b2b36",
+    "card": "#383845",
+    "accent": "#d4a5ff",
+    "accentStrong": "#7a4bb5",
+    "text": "#e0e0e0",
+    "muted": "#a9a9b5"
+  },
+  "books": []
+}

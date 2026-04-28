@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Библиотека</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button class="brand" id="home-button" type="button">📚 <span id="site-title-mini">Библиотека</span></button>
+    <nav class="topnav">
+      <button class="nav-btn active" type="button" data-view="library">Библиотека</button>
+      <a class="nav-link" href="admin.html">Управление</a>
+    </nav>
+  </header>
+
+  <main id="app">
+    <section class="hero" id="hero">
+      <div class="hero-overlay">
+        <h1 id="site-title">Библиотека</h1>
+        <p class="subtitle" id="site-subtitle"></p>
+        <p class="description" id="site-description"></p>
+      </div>
+    </section>
+
+    <section id="library-view" class="view active">
+      <div class="section-head">
+        <h2>Книги</h2>
+        <input id="book-search" class="search" type="search" placeholder="Поиск по книгам..." autocomplete="off" />
+      </div>
+      <div id="books-grid" class="books-grid"></div>
+      <p id="empty-library" class="empty hidden">Книг пока нет. Открой «Управление» и создай первую книгу.</p>
+    </section>
+
+    <section id="book-view" class="view">
+      <button class="ghost-btn" id="back-to-library" type="button">← Назад к библиотеке</button>
+      <div class="book-header">
+        <img id="book-cover" class="book-cover-large hidden" alt="Обложка книги" />
+        <div>
+          <div class="book-title-line">
+            <img id="book-icon" class="book-icon-large hidden" alt="Иконка книги" />
+            <h2 id="book-title"></h2>
+          </div>
+          <p id="book-description" class="muted"></p>
+          <p id="book-count" class="muted small"></p>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h3>Оглавление</h3>
+        <input id="chapter-search" class="search" type="search" placeholder="Поиск по главам..." autocomplete="off" />
+      </div>
+      <div id="chapters-list" class="chapters-list"></div>
+      <div id="pagination" class="pagination hidden">
+        <button id="prev-page" type="button">←</button>
+        <span id="page-info"></span>
+        <button id="next-page" type="button">→</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
