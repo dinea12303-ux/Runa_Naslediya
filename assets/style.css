@@ -586,3 +586,21 @@ body.reader-theme-white:not(.chapter-reading-page) input {
   color: #e0e0e0;
   border-color: rgba(212, 165, 255, 0.32);
 }
+/* ===== Упрощение главного hero-блока ===== */
+
+.hero,
+.site-hero,
+.home-hero,
+.main-hero {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.hero img,
+.site-hero img,
+.home-hero img,
+.main-hero img {
+  display: none !important;
+}
