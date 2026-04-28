@@ -667,3 +667,43 @@ body::after {
   display: none !important;
   background: none !important;
 }
+/* ===== Центральная ссылка чтения в верхней панели ===== */
+
+.top-read-link {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 18px;
+  border: 1px solid rgba(212, 165, 255, 0.45);
+  border-radius: 999px;
+
+  background: rgba(24, 20, 34, 0.72);
+  color: #d4a5ff;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 18px rgba(122, 75, 181, 0.22);
+}
+
+.top-read-link:hover {
+  background: rgba(122, 75, 181, 0.35);
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .top-read-link {
+    position: static;
+    transform: none;
+    margin: 10px auto;
+    width: fit-content;
+  }
+}

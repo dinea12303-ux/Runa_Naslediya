@@ -230,3 +230,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     $('books-grid').innerHTML = `<p class="empty">Ошибка загрузки базы: ${escapeHtml(e.message)}</p>`;
   }
 });
+function addTopReadLink() {
+  const header = document.querySelector('header') || document.querySelector('.topbar') || document.querySelector('.site-header');
+  if (!header) return;
+
+  if (document.querySelector('.top-read-link')) return;
+
+  const link = document.createElement('a');
+  link.className = 'top-read-link';
+  link.href = 'index.html?book=runa-naslediya';
+  link.textContent = 'Читать «Руна Наследия»';
+
+  header.appendChild(link);
+}
+
+addTopReadLink();
