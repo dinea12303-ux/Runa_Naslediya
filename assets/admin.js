@@ -3,9 +3,6 @@ const LOCAL_KEY = 'mutationLibraryAdminConfig';
 let db = null;
 let currentEditingChapterUrl = null;
 
-const ADMIN_CHAPTERS_PER_PAGE = 10;
-let adminChaptersPage = 1;
-
 const $ = (id) => document.getElementById(id);
 
 function escapeHtml(value) {
@@ -460,73 +457,26 @@ async function deleteChapter(bookId, chapterUrl) {
     setStatus('chapter-status', '✅ Глава удалена.', 'ok');
   } catch (e) { setStatus('chapter-status', `❌ ${e.message}`, 'bad'); }
 }
-`function renderChaptersManageList() {
+function renderChaptersManageList() {
   const box = $('chapters-manage-list');
   const book = selectedBook();
-
-  if (!book) {
-    box.innerHTML = '<p class="empty">Сначала создай или выбери книгу.</p>';
-    return;
-  }
-
+  if (!book) { box.innerHTML = '<p class="empty">Сначала создай или выбери книгу.</p>'; return; }
   const chapters = [...(book.chapters || [])].sort((a, b) => Number(a.num) - Number(b.num));
-
-  if (!chapters.length) {
-    box.innerHTML = '<p class="empty">В этой книге пока нет глав.</p>';
-    return;
-  }
-
-  const totalPages = Math.max(1, Math.ceil(chapters.length / ADMIN_CHAPTERS_PER_PAGE));
-
-  if (adminChaptersPage > totalPages) adminChaptersPage = totalPages;
-  if (adminChaptersPage < 1) adminChaptersPage = 1;
-
-  const start = (adminChaptersPage - 1) * ADMIN_CHAPTERS_PER_PAGE;
-  const end = start + ADMIN_CHAPTERS_PER_PAGE;
-  const pageChapters = chapters.slice(start, end);
-
+  if (!chapters.length) { box.innerHTML = '<p class="empty">В этой книге пока нет глав.</p>'; return; }
   box.innerHTML = '';
-
-  for (const ch of pageChapters) {
+  for (const ch of chapters) {
     const row = document.createElement('div');
     row.className = 'manage-row';
     row.innerHTML = `
-      <div>
-        <strong>Глава ${escapeHtml(ch.num)}. ${escapeHtml(ch.title || '')}</strong>
-        <div class="muted small">${escapeHtml(ch.url || '')}</div>
-      </div>
+      <div><strong>Глава ${escapeHtml(ch.num)}. ${escapeHtml(ch.title || '')}</strong><div class="muted small">${escapeHtml(ch.url || '')}</div></div>
       <div class="row-actions">
         <a class="small-btn" href="${escapeAttr(ch.url)}" target="_blank">Открыть</a>
         <button class="small-btn" type="button" data-action="edit">Редактировать</button>
         <button class="danger-btn" type="button" data-action="delete">Удалить</button>
       </div>`;
-
     row.querySelector('[data-action="edit"]').addEventListener('click', () => editChapter(book.id, ch.url));
     row.querySelector('[data-action="delete"]').addEventListener('click', () => deleteChapter(book.id, ch.url));
-
     box.appendChild(row);
-  }
-
-  if (totalPages > 1) {
-    const pager = document.createElement('div');
-    pager.className = 'chapter-pager';
-    pager.innerHTML = `
-      <button class="small-btn" type="button" data-action="prev" ${adminChaptersPage <= 1 ? 'disabled' : ''}>← Назад</button>
-      <span class="muted">Страница ${adminChaptersPage} / ${totalPages}</span>
-      <button class="small-btn" type="button" data-action="next" ${adminChaptersPage >= totalPages ? 'disabled' : ''}>Вперёд →</button>
-    `;
-
-    pager.querySelector('[data-action="prev"]').addEventListener('click', () => {
-      adminChaptersPage--;
-      renderChaptersManageList();
-    });
-
-    pager.querySelector('[data-action="next"]').addEventListener('click', () => {
-      adminChaptersPage++;
-      renderChaptersManageList();
-    });
-
-    box.appendChild(pager);
   }
 }
 function renderAllManageLists() {
@@ -567,10 +517,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   $('save-site').addEventListener('click', saveSiteSettings);
   $('save-book').addEventListener('click', saveBook);
   $('clear-book-form').addEventListener('click', clearBookForm);
-  $('chapter-book-select').addEventListener('change', () => {
-  adminChaptersPage = 1;
-  renderChaptersManageList();
-});
+  $('chapter-book-select').addEventListener('change', renderChaptersManageList);
   $('save-chapter').addEventListener('click', saveChapter);
   $('clear-chapter-form').addEventListener('click', clearChapterForm);
   $('reload-db').addEventListener('click', loadDbFromGitHubOrLocal);

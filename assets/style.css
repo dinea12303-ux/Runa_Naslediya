@@ -212,18 +212,3 @@ label { color: var(--accent); font-weight: 700; }
   .manage-row { grid-template-columns: 1fr; }
   .chapter-nav { flex-direction: column; }
 }
-
-.chapter-pager {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(212, 165, 255, 0.22);
-}
-
-.chapter-pager button:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
