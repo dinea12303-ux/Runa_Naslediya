@@ -641,3 +641,26 @@ body.reader-theme-white:not(.chapter-reading-page) input {
 #hero {
   display: none !important;
 }
+/* ===== Чёткий фон главной без плитки ===== */
+
+body {
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+}
+
+/* убираем лишнюю мутную пелену */
+body::before {
+  content: none !important;
+}
+
+/* оставляем только лёгкое затемнение для читаемости */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 6, 12, 0.38);
+  pointer-events: none;
+  z-index: -1;
+}
