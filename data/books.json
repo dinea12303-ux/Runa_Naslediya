@@ -99,6 +99,15 @@
           "imageUrl": "",
           "url": "books/runa-naslediya/10.html",
           "updatedAt": "2026-04-28"
+        },
+        {
+          "id": "11",
+          "createdAt": "2026-04-28",
+          "num": 11,
+          "title": "Идеальный Контроль",
+          "imageUrl": "",
+          "url": "books/runa-naslediya/11.html",
+          "updatedAt": "2026-04-28"
         }
       ],
       "createdAt": "2026-04-28",
