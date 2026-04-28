@@ -604,3 +604,35 @@ body.reader-theme-white:not(.chapter-reading-page) input {
 .main-hero img {
   display: none !important;
 }
+/* ===== Убираем отдельный hero-блок на главной ===== */
+
+.hero,
+.site-hero,
+.home-hero,
+.main-hero,
+.hero-card,
+.home-intro {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.hero img,
+.site-hero img,
+.home-hero img,
+.main-hero img,
+.hero-card img,
+.home-intro img {
+  display: none !important;
+}
+
+/* Если верхний блок использует обычную panel */
+#home-view .panel:first-child,
+#view-home .panel:first-child,
+.home .panel:first-child {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
