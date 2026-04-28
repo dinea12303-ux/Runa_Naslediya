@@ -67,14 +67,9 @@ function applySiteSettings() {
   if (theme.text) root.style.setProperty('--text', theme.text);
   if (theme.muted) root.style.setProperty('--muted', theme.muted);
 
-  const hero = $('hero');
-  if (site.heroImageUrl) {
-    hero.classList.add('has-image');
-    hero.style.backgroundImage = `url('${site.heroImageUrl.replace(/'/g, "%27")}')`;
-  } else {
-    hero.classList.remove('has-image');
-    hero.style.backgroundImage = '';
-  }
+const hero = $('hero');
+hero.classList.remove('has-image');
+hero.style.backgroundImage = '';
 
   if (site.backgroundImageUrl) {
     document.body.classList.add('has-bg');
