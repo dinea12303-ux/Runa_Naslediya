@@ -370,6 +370,23 @@ function buildChapterHtml(book, chapter, text) {
 </body>
 </html>`;
 }
+async function rebuildBookChaptersNavigation(book) {
+  const chapters = [...(book.chapters || [])].sort((a, b) => Number(a.num) - Number(b.num));
+
+  for (const ch of chapters) {
+    if (!ch.url) continue;
+
+    const file = await githubGet(ch.url);
+    if (!file) continue;
+
+    const html = decodeBase64Unicode(file.content);
+    const article = html.match(/<article>\s*([\s\S]*?)\s*<\/article>/i)?.[1] || '';
+    const text = htmlArticleToEditorText(article);
+
+    const newHtml = buildChapterHtml(book, ch, text);
+    await githubPut(ch.url, newHtml, `Обновление навигации главы ${ch.num}. ${ch.title || ''}`);
+  }
+}
 async function saveChapter() {
   try {
     const book = selectedBook();
@@ -401,6 +418,9 @@ async function saveChapter() {
     const html = buildChapterHtml(book, chapter, text);
     await githubPut(chapter.url, html, `${isNew ? 'Создание' : 'Обновление'} главы ${title}`);
     if (oldUrl && oldUrl !== chapter.url) await githubDelete(oldUrl, `Удаление старого файла главы ${title}`);
+
+    await rebuildBookChaptersNavigation(book);
+
     await saveDb(`${isNew ? 'Добавление' : 'Обновление'} главы ${title}`);
     currentEditingChapterUrl = chapter.url;
     $('chapter-id').value = id;
@@ -452,6 +472,9 @@ async function deleteChapter(bookId, chapterUrl) {
     await githubDelete(chapter.url, `Удаление главы ${chapter.title}`);
     book.chapters = book.chapters.filter(ch => ch.url !== chapterUrl);
     book.updatedAt = today();
+
+    await rebuildBookChaptersNavigation(book);
+
     await saveDb(`Удаление главы ${chapter.title}`);
     renderAllManageLists();
     setStatus('chapter-status', '✅ Глава удалена.', 'ok');
