@@ -1,5 +1,5 @@
 const DATA_URL = 'data/books.json';
-const CHAPTERS_PER_PAGE = 15;
+const CHAPTERS_PER_PAGE = 10;
 
 let libraryDb = null;
 let currentBook = null;
