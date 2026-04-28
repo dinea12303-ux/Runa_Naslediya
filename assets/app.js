@@ -73,7 +73,7 @@ hero.style.backgroundImage = '';
 
   if (site.backgroundImageUrl) {
     document.body.classList.add('has-bg');
-    document.body.style.backgroundImage = `linear-gradient(rgba(30,30,38,.82), rgba(30,30,38,.88)), url('${site.backgroundImageUrl.replace(/'/g, "%27")}')`;
+document.body.style.backgroundImage = `url("${site.backgroundImageUrl.replace(/"/g, "%27")}")`;
   }
 }
 
