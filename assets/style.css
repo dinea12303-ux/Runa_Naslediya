@@ -655,12 +655,6 @@ body::before {
   content: none !important;
 }
 
-/* оставляем только лёгкое затемнение для читаемости */
 body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(8, 6, 12, 0.38);
-  pointer-events: none;
-  z-index: -1;
+  content: none !important;
 }
