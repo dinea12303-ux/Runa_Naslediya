@@ -636,3 +636,8 @@ body.reader-theme-white:not(.chapter-reading-page) input {
   box-shadow: none !important;
   backdrop-filter: none !important;
 }
+/* ===== Полностью убираем верхний hero-блок главной ===== */
+
+#hero {
+  display: none !important;
+}
