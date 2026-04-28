@@ -81,6 +81,15 @@
           "imageUrl": "",
           "url": "books/runa-naslediya/8.html",
           "updatedAt": "2026-04-28"
+        },
+        {
+          "id": "9",
+          "createdAt": "2026-04-28",
+          "num": 9,
+          "title": "Принятие",
+          "imageUrl": "",
+          "url": "books/runa-naslediya/9.html",
+          "updatedAt": "2026-04-28"
         }
       ],
       "createdAt": "2026-04-28",
