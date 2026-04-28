@@ -15,6 +15,54 @@
   <a href="../../index.html">Библиотека</a>
   <a href="../../books/runa-naslediya/7.html">Следующая →</a>
 </nav>
+    
+<div class="chapter-tools">
+  <button class="reader-gear" type="button" onclick="toggleReaderSettings()" title="Настройки чтения">⚙</button>
+</div>
+
+<section id="reader-settings-panel" class="reader-settings-panel" hidden>
+  <div class="reader-settings-title">Настройки чтения</div>
+
+  <div class="reader-settings-grid">
+    <div class="reader-setting-row">
+      <span>Размер текста</span>
+      <div class="reader-buttons">
+        <button type="button" onclick="adjustReaderSetting('fontSize', -1)">−</button>
+        <strong id="reader-font-label">20px</strong>
+        <button type="button" onclick="adjustReaderSetting('fontSize', 1)">+</button>
+      </div>
+    </div>
+
+    <div class="reader-setting-row">
+      <span>Ширина строки</span>
+      <div class="reader-buttons">
+        <button type="button" onclick="adjustReaderSetting('width', -50)">−</button>
+        <strong id="reader-width-label">850px</strong>
+        <button type="button" onclick="adjustReaderSetting('width', 50)">+</button>
+      </div>
+    </div>
+
+    <div class="reader-setting-row">
+      <span>Интервал строк</span>
+      <div class="reader-buttons">
+        <button type="button" onclick="adjustReaderSetting('lineHeight', -0.05)">−</button>
+        <strong id="reader-line-label">1.85</strong>
+        <button type="button" onclick="adjustReaderSetting('lineHeight', 0.05)">+</button>
+      </div>
+    </div>
+
+    <div class="reader-setting-row reader-theme-row">
+      <span>Фон</span>
+      <div class="reader-theme-buttons">
+        <button type="button" onclick="setReaderTheme('dark')">Тёмный</button>
+        <button type="button" onclick="setReaderTheme('gray')">Серый</button>
+        <button type="button" onclick="setReaderTheme('soft')">Мягкий</button>
+        <button type="button" onclick="setReaderTheme('paper')">Бумага</button>
+        <button type="button" onclick="setReaderTheme('white')">Белый</button>
+      </div>
+    </div>
+  </div>
+</section>
     <h1>Глава 6. Мана: Другой Закон Термодинамики</h1>
     
     <article>
@@ -30,22 +78,104 @@
   <a href="../../books/runa-naslediya/7.html">Следующая →</a>
 </nav>
   </main>
-  <div class="font-controls">
-    <button type="button" onclick="changeFont(-1)">−</button>
-    <span id="font-label">20px</span>
-    <button type="button" onclick="changeFont(1)">+</button>
-  </div>
+
   <script>
-    function changeFont(delta) {
-      const page = document.querySelector('.chapter-page');
-      const current = parseInt(page.style.fontSize || '20', 10);
-      const next = Math.min(36, Math.max(14, current + delta));
-      page.style.fontSize = next + 'px';
-      document.getElementById('font-label').textContent = next + 'px';
-      localStorage.setItem('chapterFontSize', String(next));
+    const readerDefaults = {
+      fontSize: 20,
+      width: 850,
+      lineHeight: 1.85,
+      theme: 'dark'
+    };
+
+    function loadReaderSettings() {
+      try {
+        const raw = localStorage.getItem('readerSettingsV1');
+        if (!raw) return { ...readerDefaults };
+        return { ...readerDefaults, ...JSON.parse(raw) };
+      } catch (e) {
+        return { ...readerDefaults };
+      }
     }
-    const saved = localStorage.getItem('chapterFontSize');
-    if (saved) { document.querySelector('.chapter-page').style.fontSize = saved + 'px'; document.getElementById('font-label').textContent = saved + 'px'; }
+
+    function saveReaderSettings(settings) {
+      localStorage.setItem('readerSettingsV1', JSON.stringify(settings));
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function applyReaderSettings() {
+      const settings = loadReaderSettings();
+      const page = document.querySelector('.chapter-page');
+
+      page.style.fontSize = settings.fontSize + 'px';
+      page.style.maxWidth = settings.width + 'px';
+      page.style.lineHeight = String(settings.lineHeight);
+
+      document.body.classList.remove(
+        'reader-theme-dark',
+        'reader-theme-gray',
+        'reader-theme-soft',
+        'reader-theme-paper',
+        'reader-theme-white'
+      );
+      document.body.classList.add('reader-theme-' + settings.theme);
+
+      const fontLabel = document.getElementById('reader-font-label');
+      const widthLabel = document.getElementById('reader-width-label');
+      const lineLabel = document.getElementById('reader-line-label');
+
+      if (fontLabel) fontLabel.textContent = settings.fontSize + 'px';
+      if (widthLabel) widthLabel.textContent = settings.width + 'px';
+      if (lineLabel) lineLabel.textContent = Number(settings.lineHeight).toFixed(2);
+
+      document.querySelectorAll('.reader-theme-buttons button').forEach(button => {
+        button.classList.toggle('active', button.textContent.toLowerCase().includes(themeNameRu(settings.theme)));
+      });
+    }
+
+    function themeNameRu(theme) {
+      if (theme === 'dark') return 'тёмный';
+      if (theme === 'gray') return 'серый';
+      if (theme === 'soft') return 'мягкий';
+      if (theme === 'paper') return 'бумага';
+      if (theme === 'white') return 'белый';
+      return '';
+    }
+
+    function adjustReaderSetting(key, delta) {
+      const settings = loadReaderSettings();
+
+      if (key === 'fontSize') {
+        settings.fontSize = clamp(Number(settings.fontSize) + delta, 14, 34);
+      }
+
+      if (key === 'width') {
+        settings.width = clamp(Number(settings.width) + delta, 650, 1150);
+      }
+
+      if (key === 'lineHeight') {
+        settings.lineHeight = Math.round(clamp(Number(settings.lineHeight) + delta, 1.35, 2.25) * 100) / 100;
+      }
+
+      saveReaderSettings(settings);
+      applyReaderSettings();
+    }
+
+    function setReaderTheme(theme) {
+      const settings = loadReaderSettings();
+      settings.theme = theme;
+      saveReaderSettings(settings);
+      applyReaderSettings();
+    }
+
+    function toggleReaderSettings() {
+      const panel = document.getElementById('reader-settings-panel');
+      panel.hidden = !panel.hidden;
+    }
+
+    applyReaderSettings();
   </script>
 </body>
 </html>
