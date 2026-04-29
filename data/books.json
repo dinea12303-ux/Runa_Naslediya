@@ -144,15 +144,6 @@
           "imageUrl": "",
           "url": "books/runa-naslediya/14.html",
           "updatedAt": "2026-04-29"
-        },
-        {
-          "id": "123",
-          "createdAt": "2026-04-29",
-          "num": 123,
-          "title": "123",
-          "imageUrl": "",
-          "url": "books/runa-naslediya/123.html",
-          "updatedAt": "2026-04-29"
         }
       ],
       "createdAt": "2026-04-28",
