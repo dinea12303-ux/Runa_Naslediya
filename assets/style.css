@@ -725,3 +725,22 @@ body::after {
   background: rgba(122, 75, 181, 0.35);
   color: #fff;
 }
+
+/* ===== Кнопка продолжить чтение ===== */
+
+.continue-btn {
+  width: 100%;
+  border: 1px solid rgba(212, 165, 255, 0.45);
+  border-radius: 12px;
+  background: rgba(212, 165, 255, 0.12);
+  color: #d4a5ff;
+  padding: 11px 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.continue-btn:hover {
+  background: rgba(122, 75, 181, 0.35);
+  color: #fff;
+}
