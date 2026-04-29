@@ -530,8 +530,7 @@ async function rebuildBookChaptersNavigation(book) {
     if (!file) continue;
 
     const html = decodeBase64Unicode(file.content);
-    const article = html.match(/<article>\s*([\s\S]*?)\s*<\/article>/i)?.[1] || '';
-    const text = htmlArticleToEditorText(article);
+const article = html.match(/<article\b[^>]*>\s*([\s\S]*?)\s*<\/article>/i)?.[1] || '';    const text = htmlArticleToEditorText(article);
 
     const newHtml = buildChapterHtml(book, ch, text);
     await githubPut(ch.url, newHtml, `Обновление навигации главы ${ch.num}. ${ch.title || ''}`);
