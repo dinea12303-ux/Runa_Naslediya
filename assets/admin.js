@@ -625,7 +625,7 @@ async function editChapter(bookId, chapterUrl) {
     const file = await githubGet(chapter.url);
     if (!file) throw new Error('Файл главы не найден.');
     const html = decodeBase64Unicode(file.content);
-    const article = html.match(/<article>\s*([\s\S]*?)\s*<\/article>/i)?.[1] || '';
+    const article = html.match(/<article\b[^>]*>\s*([\s\S]*?)\s*<\/article>/i)?.[1] || '';
     $('chapter-text').value = htmlArticleToEditorText(article);
     setStatus('chapter-status', '✅ Глава загружена для редактирования.', 'ok');
   } catch (e) {
