@@ -763,3 +763,107 @@ body::after {
   background: rgba(122, 75, 181, 0.35);
   color: #fff;
 }
+/* ===== Главная как обложка книги ===== */
+
+#library-view {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 70px 28px 80px;
+}
+
+/* Блок "Книги" поднимаем и делаем как стеклянную обложку */
+#books-grid {
+  display: flex !important;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+/* Карточка книги превращается в большую промо-панель */
+.book-card {
+  width: min(620px, 92vw) !important;
+  min-height: auto !important;
+  display: block !important;
+
+  background: rgba(12, 8, 20, 0.48) !important;
+  border: 1px solid rgba(212, 165, 255, 0.34) !important;
+  border-radius: 26px !important;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.38) !important;
+  backdrop-filter: blur(5px) !important;
+
+  padding: 34px !important;
+}
+
+/* Убираем маленькую обложку с лица Алисы */
+.book-card .book-cover {
+  display: none !important;
+}
+
+.book-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.book-card-title {
+  font-size: clamp(34px, 5vw, 64px) !important;
+  line-height: 1.05 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.01em;
+  color: #fff !important;
+  text-shadow: 0 0 24px rgba(122, 75, 181, 0.65);
+}
+
+.book-card-title .book-icon {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+.book-card-desc {
+  max-width: 560px;
+  font-size: clamp(15px, 1.5vw, 19px) !important;
+  line-height: 1.75 !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.book-card .muted.small {
+  color: rgba(255, 255, 255, 0.65) !important;
+  font-size: 14px !important;
+}
+
+/* Кнопка читать */
+.book-card .primary-btn {
+  width: fit-content !important;
+  min-width: 180px;
+  padding: 14px 28px !important;
+  border-radius: 999px !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  box-shadow: 0 0 26px rgba(122, 75, 181, 0.42);
+}
+
+/* Поиск убираем повыше/правее, чтобы не мешал */
+#book-search {
+  background: rgba(12, 8, 20, 0.45) !important;
+  border-color: rgba(212, 165, 255, 0.34) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* На телефоне всё по центру */
+@media (max-width: 760px) {
+  #library-view {
+    padding: 40px 18px 60px;
+  }
+
+  #books-grid {
+    justify-content: center;
+  }
+
+  .book-card {
+    padding: 24px !important;
+  }
+
+  .book-card .primary-btn {
+    width: 100% !important;
+  }
+}
