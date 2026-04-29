@@ -325,6 +325,13 @@ function parseChapterText(raw) {
       return '<p class="scene-break">***</p>';
     }
 
+    const imgMatch = line.match(/^\[img\](.*?)\[\/img\]$/i);
+    if (imgMatch) {
+      const src = imgMatch[1].trim();
+      if (!src) return '';
+      return `<figure class="chapter-figure"><img src="${escapeAttr(src)}" alt="Иллюстрация главы"></figure>`;
+    }
+
     return `<p>${escapeHtml(line)}</p>`;
   }).join('\n');
 }
