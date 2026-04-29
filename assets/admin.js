@@ -311,14 +311,21 @@ function clearChapterForm() {
 }
 function buildChapterUrl(bookId, chapterId) { return `books/${bookId}/${chapterId}.html`; }
 function parseChapterText(raw) {
-  const blocks = String(raw || '').split(/\n\s*\n/g).map(x => x.trim()).filter(Boolean);
-  return blocks.map(block => {
-    const img = block.match(/^\[img\](.*?)\[\/img\]$/i);
-    if (img) {
-      const url = img[1].trim();
-      return `<img class="chapter-image" src="${escapeAttr(url)}" alt="Иллюстрация главы">`;
+  const lines = String(raw || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean);
+
+  if (!lines.length) return '';
+
+  return lines.map(line => {
+    if (/^\*{3,}$/.test(line)) {
+      return '<p class="scene-break">***</p>';
     }
-    return `<p>${escapeHtml(block).replace(/\n/g, '<br>')}</p>`;
+
+    return `<p>${escapeHtml(line)}</p>`;
   }).join('\n');
 }
 function buildChapterHtml(book, chapter, text) {
