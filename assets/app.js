@@ -119,6 +119,34 @@ function showBook(bookId) {
   renderChapters();
 }
 
+
+function getLastReadChapter(bookId) {
+  try {
+    const raw = localStorage.getItem('lastReadChapterV1');
+    if (!raw) return null;
+
+    const data = JSON.parse(raw);
+    if (!data || data.bookId !== bookId || !data.chapterUrl) return null;
+
+    return data;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveLastReadChapter(book, chapter) {
+  try {
+    localStorage.setItem('lastReadChapterV1', JSON.stringify({
+      bookId: book.id,
+      bookTitle: book.title || book.id,
+      chapterUrl: chapter.url,
+      chapterNum: chapter.num,
+      chapterTitle: chapter.title || '',
+      savedAt: Date.now()
+    }));
+  } catch (e) {}
+}
+
 function renderBooks() {
   const grid = $('books-grid');
   const empty = $('empty-library');
