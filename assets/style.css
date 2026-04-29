@@ -1046,3 +1046,8 @@ body::after {
     width: 100% !important;
   }
 }
+/* ===== Убрать поиск книг с главной страницы ===== */
+
+#book-search {
+  display: none !important;
+}
