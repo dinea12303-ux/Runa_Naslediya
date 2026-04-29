@@ -403,14 +403,14 @@ function buildChapterHtml(book, chapter, text) {
   <link rel="stylesheet" href="../../assets/style.css">
 </head>
 <body class="chapter-reading-page">
-  <main class="chapter-page">
+<main class="chapter-page" id="main-content">
     ${nav}
     ${readerSettings}
     <h1>Глава ${escapeHtml(chapter.num)}. ${escapeHtml(chapter.title)}</h1>
     ${heroImg}
-    <article>
-      ${parseChapterText(text)}
-    </article>
+    <article id="chapter-content" class="chapter-content" itemprop="articleBody">
+  ${parseChapterText(text)}
+</article>
     ${nav}
   </main>
 
