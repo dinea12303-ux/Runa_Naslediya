@@ -17,6 +17,16 @@
   },
   "books": [
     {
+      "id": "2",
+      "chapters": [],
+      "createdAt": "2026-05-03",
+      "title": "Путь Илона Маска",
+      "description": "Путь Илона Маска",
+      "coverUrl": "",
+      "iconUrl": "",
+      "updatedAt": "2026-05-03"
+    },
+    {
       "id": "runa-naslediya",
       "chapters": [
         {
