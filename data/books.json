@@ -18,7 +18,17 @@
   "books": [
     {
       "id": "2",
-      "chapters": [],
+      "chapters": [
+        {
+          "id": "3",
+          "createdAt": "2026-05-03",
+          "num": 3,
+          "title": "выап",
+          "imageUrl": "",
+          "url": "books/2/3.html",
+          "updatedAt": "2026-05-03"
+        }
+      ],
       "createdAt": "2026-05-03",
       "title": "Путь Илона Маска",
       "description": "Путь Илона Маска",
