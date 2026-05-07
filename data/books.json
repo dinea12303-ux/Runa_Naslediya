@@ -18,7 +18,17 @@
   "books": [
     {
       "id": "3",
-      "chapters": [],
+      "chapters": [
+        {
+          "id": "17",
+          "createdAt": "2026-05-07",
+          "num": 17,
+          "title": "17",
+          "imageUrl": "",
+          "url": "books/3/17.html",
+          "updatedAt": "2026-05-07"
+        }
+      ],
       "createdAt": "2026-05-07",
       "title": "Глобальная игра: Я украла судьбу Главного Героя!",
       "description": "Глобальная игра: Я украла судьбу Главного Героя!",
@@ -39,6 +49,15 @@
           "updatedAt": "2026-05-03"
         },
         {
+          "id": "17",
+          "createdAt": "2026-05-07",
+          "num": 17,
+          "title": "17",
+          "imageUrl": "",
+          "url": "books/2/17.html",
+          "updatedAt": "2026-05-07"
+        },
+        {
           "id": "123",
           "createdAt": "2026-05-03",
           "num": 123,
@@ -53,7 +72,7 @@
       "description": "Путь Илона Маска",
       "coverUrl": "",
       "iconUrl": "",
-      "updatedAt": "2026-05-03"
+      "updatedAt": "2026-05-07"
     },
     {
       "id": "runa-naslediya",
