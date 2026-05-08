@@ -90,6 +90,15 @@
           "imageUrl": "",
           "url": "books/3/24.html",
           "updatedAt": "2026-05-07"
+        },
+        {
+          "id": "25",
+          "createdAt": "2026-05-08",
+          "num": 25,
+          "title": "25",
+          "imageUrl": "",
+          "url": "books/3/25.html",
+          "updatedAt": "2026-05-08"
         }
       ],
       "createdAt": "2026-05-07",
@@ -97,7 +106,7 @@
       "description": "Глобальная игра: Я украла судьбу Главного Героя!",
       "coverUrl": "",
       "iconUrl": "",
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-08"
     },
     {
       "id": "2",
