@@ -6,20 +6,15 @@ let currentBook = null;
 let currentPage = 1;
 let chapterFilter = '';
 
+const $ = (id) => document.getElementById(id);
+
+// 1. Функция применения темы
 function applyGlobalReaderTheme() {
   try {
     const raw = localStorage.getItem('readerSettingsV1');
     const settings = raw ? JSON.parse(raw) : {};
     const theme = settings.theme || 'dark';
-
-    document.body.classList.remove(
-      'reader-theme-dark',
-      'reader-theme-gray',
-      'reader-theme-soft',
-      'reader-theme-paper',
-      'reader-theme-white'
-    );
-
+    document.body.classList.remove('reader-theme-dark', 'reader-theme-gray', 'reader-theme-soft', 'reader-theme-paper', 'reader-theme-white');
     document.body.classList.add('reader-theme-' + theme);
   } catch (e) {
     document.body.classList.add('reader-theme-dark');
@@ -28,30 +23,36 @@ function applyGlobalReaderTheme() {
 
 applyGlobalReaderTheme();
 
-window.addEventListener('storage', (event) => {
-  if (event.key === 'readerSettingsV1') {
-    applyGlobalReaderTheme();
-  }
-});
-
-const $ = (id) => document.getElementById(id);
-
-function safeText(value) {
-  return String(value ?? '');
-}
-
+// 2. Загрузка базы данных
 async function loadDb() {
   const res = await fetch(`${DATA_URL}?v=${Date.now()}`, { cache: 'no-store' });
   if (!res.ok) throw new Error('Не удалось загрузить data/books.json');
   libraryDb = await res.json();
   applySiteSettings();
   renderBooks();
+  setupCustomCards(); // Оживляем красивые карточки
+}
+
+// 3. Оживляем те самые карточки, которые не кликались
+function setupCustomCards() {
+  // Ищем блоки, где написано "Глобальная" и "Руна Наследия"
+  const cards = document.querySelectorAll('.hero-overlay .book-card-mini, .hero-overlay > div'); 
+  
+  cards.forEach(card => {
+    const text = card.innerText.toLowerCase();
+    if (text.includes('глобальная')) {
+      card.style.cursor = 'pointer';
+      card.onclick = () => showBook('3');
+    } else if (text.includes('руна наследия')) {
+      card.style.cursor = 'pointer';
+      card.onclick = () => showBook('runa-naslediya');
+    }
+  });
 }
 
 function applySiteSettings() {
   const site = libraryDb.site || {};
   const theme = libraryDb.theme || {};
-
   document.title = site.title || 'Библиотека';
   $('site-title-mini').textContent = site.title || 'Библиотека';
   $('site-title').textContent = site.title || 'Библиотека';
@@ -67,13 +68,10 @@ function applySiteSettings() {
   if (theme.text) root.style.setProperty('--text', theme.text);
   if (theme.muted) root.style.setProperty('--muted', theme.muted);
 
-const hero = $('hero');
-hero.classList.remove('has-image');
-hero.style.backgroundImage = '';
-
   if (site.backgroundImageUrl) {
     document.body.classList.add('has-bg');
-document.body.style.backgroundImage = `url("${site.backgroundImageUrl.replace(/"/g, "%27")}")`;  }
+    document.body.style.backgroundImage = `url("${site.backgroundImageUrl.replace(/"/g, "%27")}")`;
+  }
 }
 
 function showLibrary() {
@@ -85,13 +83,13 @@ function showLibrary() {
 }
 
 function showBook(bookId) {
-  const book = (libraryDb.books || []).find(b => b.id === bookId);
-  if (!book) return showLibrary();
+  const book = (libraryDb.books || []).find(b => String(b.id) === String(bookId));
+  if (!book) return;
 
   currentBook = book;
   currentPage = 1;
   chapterFilter = '';
-  $('chapter-search').value = '';
+  if ($('chapter-search')) $('chapter-search').value = '';
 
   $('library-view').classList.remove('active');
   $('book-view').classList.add('active');
@@ -100,87 +98,34 @@ function showBook(bookId) {
   $('book-count').textContent = `Глав: ${(book.chapters || []).length}`;
 
   const cover = $('book-cover');
-  if (book.coverUrl) {
-    cover.src = book.coverUrl;
-    cover.classList.remove('hidden');
-  } else {
-    cover.classList.add('hidden');
-  }
+  if (book.coverUrl) { cover.src = book.coverUrl; cover.classList.remove('hidden'); } 
+  else { cover.classList.add('hidden'); }
 
   const icon = $('book-icon');
-  if (book.iconUrl) {
-    icon.src = book.iconUrl;
-    icon.classList.remove('hidden');
-  } else {
-    icon.classList.add('hidden');
-  }
+  if (book.iconUrl) { icon.src = book.iconUrl; icon.classList.remove('hidden'); } 
+  else { icon.classList.add('hidden'); }
 
-  window.history.replaceState(null, '', `index.html?book=${encodeURIComponent(book.id)}`);
+  window.scrollTo(0, 0);
   renderChapters();
-}
-
-
-function getLastReadChapter(bookId) {
-  try {
-    const raw = localStorage.getItem('lastReadChapterV1');
-    if (!raw) return null;
-
-    const data = JSON.parse(raw);
-    if (!data || data.bookId !== bookId || !data.chapterUrl) return null;
-
-    return data;
-  } catch (e) {
-    return null;
-  }
-}
-
-function saveLastReadChapter(book, chapter) {
-  try {
-    localStorage.setItem('lastReadChapterV1', JSON.stringify({
-      bookId: book.id,
-      bookTitle: book.title || book.id,
-      chapterUrl: chapter.url,
-      chapterNum: chapter.num,
-      chapterTitle: chapter.title || '',
-      savedAt: Date.now()
-    }));
-  } catch (e) {}
 }
 
 function renderBooks() {
   const grid = $('books-grid');
-  const empty = $('empty-library');
-  const q = ($('book-search')?.value || '').toLowerCase().trim();
-  const books = (libraryDb.books || []).filter(book => {
-    const hay = `${book.title || ''} ${book.description || ''} ${book.id || ''}`.toLowerCase();
-    return !q || hay.includes(q);
-  });
-
+  if (!grid) return;
+  const books = libraryDb.books || [];
   grid.innerHTML = '';
-  empty.classList.toggle('hidden', books.length > 0);
 
   for (const book of books) {
     const card = document.createElement('article');
     card.className = 'book-card';
-
-    const coverHtml = book.coverUrl
-      ? `<img class="book-cover" src="${escapeAttr(book.coverUrl)}" alt="Обложка ${escapeAttr(book.title)}">`
-      : `<div class="book-cover placeholder">📘</div>`;
-
-    const iconHtml = book.iconUrl
-      ? `<img class="book-icon" src="${escapeAttr(book.iconUrl)}" alt="Иконка">`
-      : `<span class="book-icon" style="display:inline-flex;align-items:center;justify-content:center;background:rgba(212,165,255,.12);">✦</span>`;
-
     card.innerHTML = `
-      ${coverHtml}
       <div class="book-card-body">
-        <div class="book-card-title">${iconHtml}<span>${escapeHtml(book.title || book.id)}</span></div>
-        <div class="book-card-desc">${escapeHtml(book.description || 'Описание пока не добавлено.')}</div>
+        <div class="book-card-title"><span>${escapeHtml(book.title)}</span></div>
         <div class="muted small">Глав: ${(book.chapters || []).length}</div>
         <button class="primary-btn" type="button">Открыть</button>
       </div>
     `;
-    card.querySelector('button').addEventListener('click', () => showBook(book.id));
+    card.querySelector('button').onclick = () => showBook(book.id);
     grid.appendChild(card);
   }
 }
@@ -188,88 +133,31 @@ function renderBooks() {
 function renderChapters() {
   if (!currentBook) return;
   const list = $('chapters-list');
+  // Сортировка глав по номеру, чтобы 33 была после 24, а не в начале
   const chapters = [...(currentBook.chapters || [])].sort((a, b) => Number(a.num) - Number(b.num));
-  const q = chapterFilter.toLowerCase().trim();
-  const filtered = chapters.filter(ch => {
-    const hay = `глава ${ch.num} ${ch.title || ''} ${ch.id || ''}`.toLowerCase();
-    return !q || hay.includes(q);
-  });
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / CHAPTERS_PER_PAGE));
-  currentPage = Math.min(Math.max(currentPage, 1), totalPages);
-  const pageItems = filtered.slice((currentPage - 1) * CHAPTERS_PER_PAGE, currentPage * CHAPTERS_PER_PAGE);
+  
+  const totalPages = Math.max(1, Math.ceil(chapters.length / CHAPTERS_PER_PAGE));
+  const pageItems = chapters.slice((currentPage - 1) * CHAPTERS_PER_PAGE, currentPage * CHAPTERS_PER_PAGE);
 
   list.innerHTML = '';
-  if (!pageItems.length) {
-    list.innerHTML = '<p class="empty">Главы не найдены.</p>';
-  }
-
   for (const ch of pageItems) {
     const a = document.createElement('a');
     a.href = ch.url;
     a.className = 'chapter-row';
-    a.innerHTML = `
-      <div>
-        <div class="chapter-title">Глава ${escapeHtml(ch.num)}. ${escapeHtml(ch.title || '')}</div>
-        ${ch.imageUrl ? '<div class="chapter-meta">Есть иллюстрация</div>' : ''}
-      </div>
-      <span class="chapter-meta">Открыть →</span>
-    `;
+    a.innerHTML = `<div><div class="chapter-title">Глава ${ch.num}. ${escapeHtml(ch.title || '')}</div></div><span>Открыть →</span>`;
     list.appendChild(a);
   }
-
-  $('pagination').classList.toggle('hidden', filtered.length <= CHAPTERS_PER_PAGE);
+  
+  $('pagination').classList.toggle('hidden', chapters.length <= CHAPTERS_PER_PAGE);
   $('page-info').textContent = `Стр. ${currentPage} / ${totalPages}`;
-  $('prev-page').disabled = currentPage <= 1;
-  $('next-page').disabled = currentPage >= totalPages;
 }
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
-}
+function escapeHtml(v) { return String(v||'').replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
 
-function escapeAttr(value) {
-  return escapeHtml(value).replaceAll('`', '&#096;');
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  $('home-button').addEventListener('click', showLibrary);
-  $('back-to-library').addEventListener('click', showLibrary);
-  $('book-search').addEventListener('input', renderBooks);
-  $('chapter-search').addEventListener('input', (e) => {
-    chapterFilter = e.target.value;
-    currentPage = 1;
-    renderChapters();
-  });
-  $('prev-page').addEventListener('click', () => { currentPage--; renderChapters(); });
-  $('next-page').addEventListener('click', () => { currentPage++; renderChapters(); });
-
-  try {
-    await loadDb();
-    const params = new URLSearchParams(location.search);
-    const bookId = params.get('book');
-    if (bookId) showBook(bookId);
-  } catch (e) {
-    $('books-grid').innerHTML = `<p class="empty">Ошибка загрузки базы: ${escapeHtml(e.message)}</p>`;
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  loadDb();
+  $('home-button').onclick = showLibrary;
+  $('back-to-library').onclick = showLibrary;
+  $('prev-page').onclick = () => { currentPage--; renderChapters(); };
+  $('next-page').onclick = () => { currentPage++; renderChapters(); };
 });
-function addTopReadLink() {
-  const header = document.querySelector('header') || document.querySelector('.topbar') || document.querySelector('.site-header');
-  if (!header) return;
-
-  if (document.querySelector('.top-read-link')) return;
-
-  const link = document.createElement('a');
-  link.className = 'top-read-link';
-  link.href = 'index.html?book=runa-naslediya';
-  link.textContent = 'Читать «Руна Наследия»';
-
-  header.appendChild(link);
-}
-
-addTopReadLink();
