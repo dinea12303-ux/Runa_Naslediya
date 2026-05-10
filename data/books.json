@@ -92,58 +92,13 @@
           "updatedAt": "2026-05-07"
         },
         {
-          "id": "25",
-          "createdAt": "2026-05-08",
-          "num": 25,
-          "title": "25",
+          "id": "33",
+          "createdAt": "2026-05-10",
+          "num": 3334,
+          "title": "3334",
           "imageUrl": "",
-          "url": "books/3/25.html",
-          "updatedAt": "2026-05-08"
-        },
-        {
-          "id": "26",
-          "createdAt": "2026-05-08",
-          "num": 26,
-          "title": "26",
-          "imageUrl": "",
-          "url": "books/3/26.html",
-          "updatedAt": "2026-05-08"
-        },
-        {
-          "id": "27",
-          "createdAt": "2026-05-08",
-          "num": 27,
-          "title": "27",
-          "imageUrl": "",
-          "url": "books/3/27.html",
-          "updatedAt": "2026-05-08"
-        },
-        {
-          "id": "28",
-          "createdAt": "2026-05-08",
-          "num": 28,
-          "title": "28",
-          "imageUrl": "",
-          "url": "books/3/28.html",
-          "updatedAt": "2026-05-08"
-        },
-        {
-          "id": "29",
-          "createdAt": "2026-05-08",
-          "num": 29,
-          "title": "29",
-          "imageUrl": "",
-          "url": "books/3/29.html",
-          "updatedAt": "2026-05-08"
-        },
-        {
-          "id": "31",
-          "createdAt": "2026-05-08",
-          "num": 31,
-          "title": "30-32",
-          "imageUrl": "",
-          "url": "books/3/31.html",
-          "updatedAt": "2026-05-08"
+          "url": "books/3/33.html",
+          "updatedAt": "2026-05-10"
         }
       ],
       "createdAt": "2026-05-07",
@@ -151,7 +106,7 @@
       "description": "Глобальная игра: Я украла судьбу Главного Героя!",
       "coverUrl": "",
       "iconUrl": "",
-      "updatedAt": "2026-05-08"
+      "updatedAt": "2026-05-10"
     },
     {
       "id": "2",
