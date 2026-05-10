@@ -4,82 +4,58 @@ const CHAPTERS_PER_PAGE = 10;
 let libraryDb = null;
 let currentBook = null;
 let currentPage = 1;
-let chapterFilter = '';
 
 const $ = (id) => document.getElementById(id);
 
-// 1. Функция применения темы
-function applyGlobalReaderTheme() {
+// Загрузка базы
+async function loadDb() {
   try {
-    const raw = localStorage.getItem('readerSettingsV1');
-    const settings = raw ? JSON.parse(raw) : {};
-    const theme = settings.theme || 'dark';
-    document.body.classList.remove('reader-theme-dark', 'reader-theme-gray', 'reader-theme-soft', 'reader-theme-paper', 'reader-theme-white');
-    document.body.classList.add('reader-theme-' + theme);
+    const res = await fetch(`${DATA_URL}?v=${Date.now()}`, { cache: 'no-store' });
+    libraryDb = await res.json();
+    applySiteSettings();
+    renderBooks();
+    setupHeroCards(); // Оживляем карточки на главном экране
   } catch (e) {
-    document.body.classList.add('reader-theme-dark');
+    console.error("Ошибка загрузки БД:", e);
   }
 }
 
-applyGlobalReaderTheme();
-
-// 2. Загрузка базы данных
-async function loadDb() {
-  const res = await fetch(`${DATA_URL}?v=${Date.now()}`, { cache: 'no-store' });
-  if (!res.ok) throw new Error('Не удалось загрузить data/books.json');
-  libraryDb = await res.json();
-  applySiteSettings();
-  renderBooks();
-  setupCustomCards(); // Оживляем красивые карточки
-}
-
-// 3. Оживляем те самые карточки, которые не кликались
-function setupCustomCards() {
-  // Ищем блоки, где написано "Глобальная" и "Руна Наследия"
-  const cards = document.querySelectorAll('.hero-overlay .book-card-mini, .hero-overlay > div'); 
+// Функция для поиска карточек на главном экране (которые на скриншоте)
+function setupHeroCards() {
+  // Ищем все блоки, которые могут быть карточками
+  const allDivs = document.querySelectorAll('div, article, section');
   
-  cards.forEach(card => {
-    const text = card.innerText.toLowerCase();
-    if (text.includes('глобальная')) {
-      card.style.cursor = 'pointer';
-      card.onclick = () => showBook('3');
-    } else if (text.includes('руна наследия')) {
-      card.style.cursor = 'pointer';
-      card.onclick = () => showBook('runa-naslediya');
+  allDivs.forEach(el => {
+    const text = el.innerText || "";
+    // Проверяем, есть ли внутри текст названия книги и при этом это не огромный весь экран
+    if (el.children.length < 10) { 
+      if (text.includes('Глобальная игра') || text.includes('Глобальная')) {
+        makeClickable(el, '3');
+      } else if (text.includes('Руна Наследия')) {
+        makeClickable(el, 'runa-naslediya');
+      }
     }
   });
 }
 
+function makeClickable(el, bookId) {
+  el.style.cursor = 'pointer';
+  el.onclick = (e) => {
+    e.preventDefault();
+    showBook(bookId);
+  };
+}
+
 function applySiteSettings() {
   const site = libraryDb.site || {};
-  const theme = libraryDb.theme || {};
-  document.title = site.title || 'Библиотека';
-  $('site-title-mini').textContent = site.title || 'Библиотека';
   $('site-title').textContent = site.title || 'Библиотека';
   $('site-subtitle').textContent = site.subtitle || '';
   $('site-description').textContent = site.description || '';
 
-  const root = document.documentElement;
-  if (theme.background) root.style.setProperty('--bg', theme.background);
-  if (theme.surface) root.style.setProperty('--surface', theme.surface);
-  if (theme.card) root.style.setProperty('--card', theme.card);
-  if (theme.accent) root.style.setProperty('--accent', theme.accent);
-  if (theme.accentStrong) root.style.setProperty('--accent-strong', theme.accentStrong);
-  if (theme.text) root.style.setProperty('--text', theme.text);
-  if (theme.muted) root.style.setProperty('--muted', theme.muted);
-
   if (site.backgroundImageUrl) {
+    document.body.style.backgroundImage = `url("${site.backgroundImageUrl}")`;
     document.body.classList.add('has-bg');
-    document.body.style.backgroundImage = `url("${site.backgroundImageUrl.replace(/"/g, "%27")}")`;
   }
-}
-
-function showLibrary() {
-  currentBook = null;
-  $('library-view').classList.add('active');
-  $('book-view').classList.remove('active');
-  window.history.replaceState(null, '', 'index.html');
-  renderBooks();
 }
 
 function showBook(bookId) {
@@ -88,22 +64,18 @@ function showBook(bookId) {
 
   currentBook = book;
   currentPage = 1;
-  chapterFilter = '';
-  if ($('chapter-search')) $('chapter-search').value = '';
 
   $('library-view').classList.remove('active');
   $('book-view').classList.add('active');
-  $('book-title').textContent = book.title || book.id;
-  $('book-description').textContent = book.description || '';
-  $('book-count').textContent = `Глав: ${(book.chapters || []).length}`;
+  
+  // Заполняем данные
+  $('book-title').textContent = book.title;
+  $('book-description').textContent = book.description || 'Описание отсутствует';
+  $('book-count').textContent = `Всего глав: ${book.chapters.length}`;
 
   const cover = $('book-cover');
-  if (book.coverUrl) { cover.src = book.coverUrl; cover.classList.remove('hidden'); } 
+  if (book.coverUrl) { cover.src = book.coverUrl; cover.classList.remove('hidden'); }
   else { cover.classList.add('hidden'); }
-
-  const icon = $('book-icon');
-  if (book.iconUrl) { icon.src = book.iconUrl; icon.classList.remove('hidden'); } 
-  else { icon.classList.add('hidden'); }
 
   window.scrollTo(0, 0);
   renderChapters();
@@ -112,52 +84,54 @@ function showBook(bookId) {
 function renderBooks() {
   const grid = $('books-grid');
   if (!grid) return;
-  const books = libraryDb.books || [];
   grid.innerHTML = '';
 
-  for (const book of books) {
-    const card = document.createElement('article');
+  (libraryDb.books || []).forEach(book => {
+    const card = document.createElement('div');
     card.className = 'book-card';
     card.innerHTML = `
       <div class="book-card-body">
-        <div class="book-card-title"><span>${escapeHtml(book.title)}</span></div>
-        <div class="muted small">Глав: ${(book.chapters || []).length}</div>
-        <button class="primary-btn" type="button">Открыть</button>
+        <h4>${book.title}</h4>
+        <button class="primary-btn">Читать</button>
       </div>
     `;
-    card.querySelector('button').onclick = () => showBook(book.id);
+    card.onclick = () => showBook(book.id);
     grid.appendChild(card);
-  }
+  });
 }
 
 function renderChapters() {
   if (!currentBook) return;
   const list = $('chapters-list');
-  // Сортировка глав по номеру, чтобы 33 была после 24, а не в начале
-  const chapters = [...(currentBook.chapters || [])].sort((a, b) => Number(a.num) - Number(b.num));
+  const chapters = [...currentBook.chapters].sort((a, b) => Number(a.num) - Number(b.num));
   
-  const totalPages = Math.max(1, Math.ceil(chapters.length / CHAPTERS_PER_PAGE));
-  const pageItems = chapters.slice((currentPage - 1) * CHAPTERS_PER_PAGE, currentPage * CHAPTERS_PER_PAGE);
+  const totalPages = Math.ceil(chapters.length / CHAPTERS_PER_PAGE);
+  const items = chapters.slice((currentPage - 1) * CHAPTERS_PER_PAGE, currentPage * CHAPTERS_PER_PAGE);
 
   list.innerHTML = '';
-  for (const ch of pageItems) {
+  items.forEach(ch => {
     const a = document.createElement('a');
     a.href = ch.url;
     a.className = 'chapter-row';
-    a.innerHTML = `<div><div class="chapter-title">Глава ${ch.num}. ${escapeHtml(ch.title || '')}</div></div><span>Открыть →</span>`;
+    a.innerHTML = `<div>Глава ${ch.num}: ${ch.title || ''}</div><span>→</span>`;
     list.appendChild(a);
-  }
-  
+  });
+
   $('pagination').classList.toggle('hidden', chapters.length <= CHAPTERS_PER_PAGE);
-  $('page-info').textContent = `Стр. ${currentPage} / ${totalPages}`;
+  $('page-info').textContent = `${currentPage} / ${totalPages}`;
 }
 
-function escapeHtml(v) { return String(v||'').replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+// При нажатии на логотип или "Назад"
+function showLibrary() {
+  currentBook = null;
+  $('book-view').classList.remove('active');
+  $('library-view').classList.add('active');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   loadDb();
-  $('home-button').onclick = showLibrary;
-  $('back-to-library').onclick = showLibrary;
-  $('prev-page').onclick = () => { currentPage--; renderChapters(); };
-  $('next-page').onclick = () => { currentPage++; renderChapters(); };
+  if ($('home-button')) $('home-button').onclick = showLibrary;
+  if ($('back-to-library')) $('back-to-library').onclick = showLibrary;
+  if ($('prev-page')) $('prev-page').onclick = () => { if(currentPage > 1) { currentPage--; renderChapters(); } };
+  if ($('next-page')) $('next-page').onclick = () => { currentPage++; renderChapters(); };
 });
