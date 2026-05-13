@@ -198,6 +198,15 @@
           "imageUrl": "",
           "url": "books/3/87.html",
           "updatedAt": "2026-05-13"
+        },
+        {
+          "id": "88",
+          "createdAt": "2026-05-13",
+          "num": 88,
+          "title": "88",
+          "imageUrl": "",
+          "url": "books/3/88.html",
+          "updatedAt": "2026-05-13"
         }
       ],
       "createdAt": "2026-05-07",
