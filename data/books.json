@@ -270,6 +270,15 @@
           "imageUrl": "",
           "url": "books/3/95.html",
           "updatedAt": "2026-05-13"
+        },
+        {
+          "id": "96",
+          "createdAt": "2026-05-13",
+          "num": 96,
+          "title": "96",
+          "imageUrl": "",
+          "url": "books/3/96.html",
+          "updatedAt": "2026-05-13"
         }
       ],
       "createdAt": "2026-05-07",
