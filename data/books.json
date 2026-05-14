@@ -378,6 +378,15 @@
           "imageUrl": "",
           "url": "books/3/138.html",
           "updatedAt": "2026-05-14"
+        },
+        {
+          "id": "139",
+          "createdAt": "2026-05-14",
+          "num": 139,
+          "title": "139",
+          "imageUrl": "",
+          "url": "books/3/139.html",
+          "updatedAt": "2026-05-14"
         }
       ],
       "createdAt": "2026-05-07",
