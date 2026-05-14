@@ -315,6 +315,15 @@
           "imageUrl": "",
           "url": "books/3/100.html",
           "updatedAt": "2026-05-13"
+        },
+        {
+          "id": "101",
+          "createdAt": "2026-05-14",
+          "num": 101,
+          "title": "101",
+          "imageUrl": "",
+          "url": "books/3/101.html",
+          "updatedAt": "2026-05-14"
         }
       ],
       "createdAt": "2026-05-07",
@@ -322,7 +331,7 @@
       "description": "Глобальная игра: Я украла судьбу Главного Героя!",
       "coverUrl": "",
       "iconUrl": "",
-      "updatedAt": "2026-05-13"
+      "updatedAt": "2026-05-14"
     },
     {
       "id": "runa-naslediya",
